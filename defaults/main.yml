@@ -1,0 +1,27 @@
+---
+deluge_web_pwd_sha1: ''
+deluge_web_pwd_salt: ''
+deluge_web_port: 8112
+deluge_daemon_port: 58846
+deluge_listen_interface: eth0
+deluge_allow_remote: false
+deluge_auth: []
+deluge_user: deluge
+deluge_group: deluge
+deluge_dir: "/srv/deluge"
+deluge_download_location: /srv/deluge/Downloads/Current
+deluge_move_completed_path: /srv/deluge/Downloads/Complete
+deluge_torrent_files_location: /srv/deluge/Downloads/Torrents
+deluge_autoadd_location: /srv/deluge/Downloads/Inbox
+deluge_extractor_path: /srv/deluge/Downloads/Complete
+deluge_watch_dirs:
+  - /srv/deluge/Downloads/Inbox
+deluge_max_upload_speed: 100.0
+deluge_max_active_limit: 10
+deluge_max_active_downloading: 5
+deluge_max_active_seeding: 5
+deluge_max_half_open_connections: 8
+deluge_max_connections_per_second: 20
+deluge_max_upload_slots_global: 4
+deluge_max_connections_global: 200
+deluge_manage_ufw: false

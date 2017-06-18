@@ -1,0 +1,10 @@
+---
+- name: restart deluged
+  systemd:
+    name: deluged
+    daemon_reload: yes
+    state: restarted
+  notify: restart deluge-web
+
+- name: restart deluge-web
+  service: "name=deluge-web state=restarted"

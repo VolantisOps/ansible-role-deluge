@@ -1,0 +1,65 @@
+---
+- name: Allow fixed deluge ports over tcp
+  ufw:
+    rule: allow
+    port: 56881:56889
+    proto: tcp
+  when: deluge_manage_ufw
+
+- name: Allow fixed deluge ports over udp
+  ufw:
+    rule: allow
+    port: 56881:56889
+    proto: udp
+  when: deluge_manage_ufw
+  
+- name: Allow deluge web port
+  ufw:
+    rule: allow
+    port: 8112
+    proto: tcp
+  when: deluge_manage_ufw
+
+- name: Install deluge package
+  pacman: name=deluge state=present
+
+- name: Copy service files
+  template:
+    src: "{{ item }}.service.j2"
+    dest: /usr/lib/systemd/system/{{ item }}.service
+    owner: "{{ deluge_user }}"
+    group: "{{ deluge_group }}"
+  notify: restart deluged
+  with_items:
+    - deluged
+    - deluge-web
+
+- name: Ensure deluge config directory exists with proper permissions
+  file:
+    path: "{{ deluge_dir }}/.config/deluge"
+    owner: "{{ deluge_user }}"
+    group: "{{ deluge_group }}"
+    state: directory
+    recurse: yes
+  notify: restart deluged
+
+- name: Copy deluge config files
+  template:
+    src: "{{item}}.j2"
+    dest: "{{ deluge_dir }}/.config/deluge/{{ item }}"
+    owner: "{{ deluge_user }}"
+    group: "{{ deluge_group }}"
+  with_items:
+    - auth
+    - autoadd.conf
+    - core.conf
+    - execute.conf
+    - extractor.conf
+    - web.conf
+  notify: restart deluged
+
+- name: Ensure deluge daemon is running
+  service: "name=deluged enabled=yes state=started"
+
+- name: Ensure deluge-web is running
+  service: "name=deluge-web enabled=yes state=started"

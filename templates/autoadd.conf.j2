@@ -1,0 +1,17 @@
+{
+  "file": 1, 
+  "format": 1
+}{
+  "watchdirs": {
+    {% set count = 1 %}
+    {% set watch_dirs_length = deluge_watch_dirs|length %}
+    {% for watch_dir in deluge_watch_dirs %}
+    "{{ count }}": {
+      "path": "{{ watch_dir }}", 
+      "abspath": "{{ watch_dir }}", 
+      "enabled": true
+    }{% if count != watch_dirs_length %},{% endif %}
+    {% endfor %}
+  }, 
+  "next_id": {{ watch_dirs_length + 1 }}
+}
